@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PGL - Rota Europa Vale do Paraíba | Agente de Cargas</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        .gradient-header {
+            background: linear-gradient(35deg, #1B5E20 -150%, #2E7D32 50%, #4CAF50 0%);
+        }
+        
+        .hero-section {
+            background: linear-gradient(rgba(46, 125, 50, 0.9), rgba(46, 125, 50, 0.9)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2E7D32;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #2E7D32, #4CAF50);
+        }
+        
+        .carousel-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .carousel-slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .carousel-slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(46, 125, 50, 0.8);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-nav:hover {
+            background: rgba(46, 125, 50, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-prev {
+            left: 20px;
+        }
+        
+        .carousel-next {
+            right: 20px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .carousel-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-indicator.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        
+        .calendar-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-nav-btn {
+            background: #2E7D32;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-nav-btn:hover {
+            background: #1B5E20;
+            transform: translateY(-2px);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .calendar-day {
+            background: white;
+            padding: 1rem;
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-day.other-month {
+            background: #f5f5f5;
+            color: #999;
+        }
+        
+        .calendar-day.completed {
+            background: #4CAF50;
+            color: white;
+            position: relative;
+        }
+        
+        .calendar-day.scheduled {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .calendar-day.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .aircraft-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .aircraft-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .accordion-header:hover {
+            background: #e9ecef;
+        }
+        
+        .accordion-content {
+            display: none;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        .accordion-content.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: #2E7D32;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-section {
+            background: linear-gradient(35deg, #2E7D32 45%, #4CAF50 -50%);
+            color: white;
+        }
+        
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .frequency-badge {
+            display: inline-block;
+            background: #2E7D32;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-header text-white py-6 shadow-lg">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <img src="logo/pgl_logo.png" alt="PGL Logo" class="h-16 w-auto">
+                    <div>
+                        <h1 class="text-3xl font-bold"></h1>
+                        <p class="text-xl opacity-90"></p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#rota" class="hover:text-green-200 transition">Rota</a>
+                    <a href="#aeronave" class="hover:text-green-200 transition">Aeronave</a>
+                    <a href="#diferenciais" class="hover:text-green-200 transition">Diferenciais</a>
+                    <a href="#contato" class="hover:text-green-200 transition">Contato</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-6">Rota Europa - Vale do Paraíba</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">
+                Conectando a Europa ao coração industrial do Brasil com segurança, rapidez e eficiência. 
+                Nossa nova rota oferece soluções logísticas completas para o transporte de cargas.
+            </p>
+            <div class="flex justify-center items-center space-x-4">
+                <div class="frequency-badge pulse-animation">
+                    <i class="fas fa-plane mr-2"></i>
+                    Frequência: 15 em 15 dias
+                </div>
+                <div class="frequency-badge">
+                    <i class="fas fa-calendar-alt mr-2"></i>
+                    Próximo voo: 18/07/2025
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Shipment Gallery -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title">Último Embarque - 03/07/2025</h2>
+            <div class="carousel-container max-w-4xl mx-auto">
+                <div class="carousel-slide active">
+                    <img src="images/foto1.jpg" alt="Boeing 757 com porta do nariz aberta" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto2.jpg" alt="Empilhadeira carregando paletes" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto3.jpg" alt="Aeronave Cargolux sendo carregada" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto4.jpg" alt="Interior do compartimento de carga" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto5.jpg" alt="Porta do nariz totalmente aberta" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto6.jpg" alt="Contêineres ULD sendo posicionados" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto7.jpg" alt="Trabalhadores com coletes de segurança" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto8.jpg" alt="Vista aérea do carregamento" class="w-full h-96 object-cover">
+                </div>
+                <div class="carousel-slide">
+                    <img src="images/foto9.jpg" alt="Estágio final do carregamento" class="w-full h-96 object-cover">
+                </div>
+                
+                <button class="carousel-nav carousel-prev" onclick="changeSlide(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-nav carousel-next" onclick="changeSlide(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                
+                <div class="carousel-indicators">
+                    <span class="carousel-indicator active" onclick="goToSlide(0)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(1)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(2)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(3)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(4)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(5)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(6)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(7)"></span>
+                    <span class="carousel-indicator" onclick="goToSlide(8)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flight Schedule -->
+    <section class="py-16 bg-gray-100" id="rota">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title">Calendário de Frequência</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav-btn" onclick="prevMonth()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 class="text-2xl font-bold" id="currentMonth">Julho 2025</h3>
+                        <button class="calendar-nav-btn" onclick="nextMonth()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Calendar will be generated by JavaScript -->
+                    </div>
+                    
+                    <div class="mt-6 flex justify-center space-x-6">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                            <span>Embarque Realizado</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-blue-500 rounded mr-2"></div>
+                            <span>Próximos Voos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aircraft Specifications -->
+    <section class="py-16 bg-white" id="aeronave">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title">Especificações da Aeronave</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="aircraft-card">
+                    <div class="accordion-header" onclick="toggleAccordion('aircraft-specs')">
+                        <div class="flex items-center space-x-4">
+                            <i class="fas fa-plane text-2xl text-green-600"></i>
+                            <div>
+                                <h3 class="text-xl font-bold">Boeing 747 Nose Door - Cargolux</h3>
+                                <p class="text-gray-600">Aeronave cargueira de alta capacidade</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-green-600" id="aircraft-specs-icon"></i>
+                    </div>
+                    
+                    <div class="accordion-content" id="aircraft-specs-content">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-green-600">Especificações Técnicas</h4>
+                                <ul class="space-y-2">
+                                    <li><strong>Modelo:</strong> Boeing 747-200F</li>
+                                    <li><strong>Capacidade de Carga:</strong> 39,780 kg</li>
+                                    <li><strong>Volume de Carga:</strong> 239 m³</li>
+                                    <li><strong>Comprimento:</strong> 47.3 m</li>
+                                    <li><strong>Envergadura:</strong> 38.1 m</li>
+                                    <li><strong>Altura:</strong> 13.6 m</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg mb-3 text-green-600">Características Especiais</h4>
+                                <ul class="space-y-2">
+                                    <li><strong>Porta do Nariz:</strong> Abertura frontal para carga oversized</li>
+                                    <li><strong>Operadora:</strong> Cargolux Airlines</li>
+                                    <li><strong>Certificações:</strong> IATA, ICAO, FAA</li>
+                                    <li><strong>Compartimentos:</strong> Main deck e lower deck</li>
+                                    <li><strong>Sistemas:</strong> Controle de temperatura</li>
+                                    <li><strong>Segurança:</strong> Monitoramento 24/7</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentials -->
+    <section class="py-16 bg-gray-100" id="diferenciais">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title">Nossos Diferenciais</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="feature-card">
+                    <i class="fas fa-clock feature-icon"></i>
+                    <h3 class="text-xl font-bold mb-3">Rápido</h3>
+                    <p class="text-gray-600">Transporte expresso com tempos de trânsito otimizados e frequência regular.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <h3 class="text-xl font-bold mb-3">Seguro</h3>
+                    <p class="text-gray-600">Máxima segurança com rastreamento em tempo real e seguros abrangentes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-dollar-sign feature-icon"></i>
+                    <h3 class="text-xl font-bold mb-3">Preço Competitivo</h3>
+                    <p class="text-gray-600">Tarifas competitivas sem comprometer a qualidade do serviço.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-users feature-icon"></i>
+                    <h3 class="text-xl font-bold mb-3">Multicliente</h3>
+                    <p class="text-gray-600">Atendimento personalizado para diversos segmentos e tipos de carga.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <div class="bg-white rounded-lg p-8 shadow-lg max-w-3xl mx-auto">
+                    <h3 class="text-2xl font-bold mb-4 text-green-600">Por que escolher nossa rota?</h3>
+                    <div class="grid md:grid-cols-3 gap-6 text-left">
+                        <div>
+                            <h4 class="font-bold mb-2">Conectividade</h4>
+                            <p class="text-sm text-gray-600">Ligação direta entre principais centros industriais europeus e o Vale do Paraíba.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">Eficiência</h4>
+                            <p class="text-sm text-gray-600">Operações streamlined com menos conexões e maior velocidade.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">Suporte</h4>
+                            <p class="text-sm text-gray-600">Equipe especializada disponível 24/7 para suporte completo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section py-16" id="contato">
+        <div class="container mx-auto px-6">
+            <h2 class="section-title text-white">Entre em Contato</h2>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="contact-card">
+                    <h3 class="text-xl font-bold mb-4">Informações de Contato</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+55 (12) 3939-4343</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>thiago.bianchi@pglbr.com.br</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span>São José dos Campos, SP</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-card">
+                    <h3 class="text-xl font-bold mb-4">Horário de Operação</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span>Segunda - Sexta:</span>
+                            <span>08:00 - 18:00</span>
+                        </div>
+                       
+                        <div class="flex justify-between">
+                            <span>Plantão AOG 24/7:</span>
+                            <span>Disponível</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="font-bold mb-3">PGL - Agente de Cargas</h4>
+                    <p class="text-gray-400">Especialistas em logística internacional com soluções completas para transporte de cargas.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-3">Serviços</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Transporte Aéreo</li>
+                        <li>Logística Internacional</li>
+                        <li>Consultoria Aduaneira</li>
+                        <li>Seguro de Cargas</li>
+                    </ul>
+                </div>
+              
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 PGL Agente de Cargas. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        // Auto-advance carousel
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+
+        // Calendar functionality
+        let currentDate = new Date(2025, 6, 1); // July 2025
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
+                           "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+
+        const scheduledFlights = [
+            new Date(2025, 6, 3),  // July 3, 2025 (completed)
+            new Date(2025, 6, 18), // July 18, 2025 (next)
+            new Date(2025, 7, 2),  // August 2, 2025
+            new Date(2025, 7, 17), // August 17, 2025
+            new Date(2025, 8, 1),  // September 1, 2025
+            new Date(2025, 8, 16), // September 16, 2025
+        ];
+
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthTitle = document.getElementById('currentMonth');
+            
+            monthTitle.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            // Clear grid
+            grid.innerHTML = '';
+            
+            // Add day headers
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day font-bold text-gray-600 bg-gray-100';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Generate calendar days
+            for (let i = 0; i < 42; i++) {
+                const cellDate = new Date(startDate);
+                cellDate.setDate(startDate.getDate() + i);
+                
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = cellDate.getDate();
+                
+                // Check if day is in current month
+                if (cellDate.getMonth() !== currentDate.getMonth()) {
+                    dayCell.classList.add('other-month');
+                }
+                
+                // Check for scheduled flights
+                const isScheduled = scheduledFlights.some(flight => 
+                    flight.getFullYear() === cellDate.getFullYear() &&
+                    flight.getMonth() === cellDate.getMonth() &&
+                    flight.getDate() === cellDate.getDate()
+                );
+                
+                if (isScheduled) {
+                    const today = new Date();
+                    const flightDate = new Date(cellDate);
+                    
+                    if (flightDate.getFullYear() === 2025 && flightDate.getMonth() === 6 && flightDate.getDate() === 3) {
+                        dayCell.classList.add('completed');
+                    } else {
+                        dayCell.classList.add('scheduled');
+                    }
+                }
+                
+                grid.appendChild(dayCell);
+            }
+        }
+
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        }
+
+        // Accordion functionality
+        function toggleAccordion(id) {
+            const content = document.getElementById(id + '-content');
+            const icon = document.getElementById(id + '-icon');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('active');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }
+
+        // Initialize calendar
+        generateCalendar();
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    <script id="html_badge_script1">
+        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
+            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDmSTkL4FjU7WYIzA%2FpJkveq4OLAomBdGR5xr3nKq4P1B2drifM9j3Zhj3XzREtSzZmfMGtguSP%2BvOHC3UHWyseqGycjfzgSTT4wYJaBEWM8c4kfawXyBh9Q9jY4sZXSZnvq%2Bz%2BzB2AcNHpTXvosGb%2B1Zz%2BOFWc8POWjvFQl9FpsSzENeJuju%2Fydv%2Ft7tuj5L5xZ1RZ7YvlU8GachEEz%2FwFliy7%2BZjB1ISzVJhJ2aT5zm8fNqXx0rnbWRAmvhsQ7t48cKXfFnFz0Zj%2BN%2BW5LS3slELCk5Pc6l0CGJcDPgjakzTXFFRyp06KUxlTNeQk8VzFapIb5JEnNZqS8PNv7r%2Bxhc6VqenojwJHULi9t6SKtDxV6yaVHPNeZWmD40yNkjcxd9Y4MeHCzLH02DmlcRzMNLcvhKRJKE1wp57BVx3l8ZJ7zs0bHGzVZdSVNqy9fexs6kXrt%2B%2FaPEtHrixEds5TaW%2BQQe4YnohiaUpghBAt5DBCZ4s1ASUcwIWZCy2Z5p5S5cXi93s73uOSJY0b1tV9s%3D";
+        window.__genspark_locale = "pt-BR";
+        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDmSTkL4FjU7WYIzA/pJkveq4OLAomBdGR5xr3nKq4P1B2drifM9j3Zhj3XzREtSzZmfMGtguSP+vOHC3UHWyseqGycjfzgSTT4wYJaBEWM8c4kfawXyBh9Q9jY4sZXSZnvq+z+zB2AcNHpTXvosGb+1Zz+OFWc8POWjvFQl9FpsSzENeJuju/ydv/t7tuj5L5xZ1RZ7YvlU8GachEEz/wFliy7+ZjB1ISzVJhJ2aT5zm8fNqXx0rnbWRAmvhsQ7t48cKXfFnFz0Zj+N+W5LS3slELCk5Pc6l0CGJcDPgjakzTXFFRyp06KUxlTNeQk8VzFapIb5JEnNZqS8PNv7r+xhc6VqenojwJHULi9t6SKtDxV6yaVHPNeZWmD40yNkjcxd9Y4MeHCzLH02DmlcRzMNLcvhKRJKE1wp57BVx3l8ZJ7zs0bHGzVZdSVNqy9fexs6kXrt+/aPEtHrixEds5TaW+QQe4YnohiaUpghBAt5DBCZ4s1ASUcwIWZCy2Z5p5S5cXi93s73uOSJY0b1tV9s=";
+    </script>
+    
+    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
+    
