@@ -322,7 +322,7 @@
                 </div>
                 <div class="frequency-badge">
                     <i class="fas fa-calendar-alt mr-2"></i>
-                    Próximo voo: 18/07/2025
+                    Próximo voo: 25/08/2025
                 </div>
             </div>
         </div>
@@ -331,7 +331,7 @@
     <!-- Latest Shipment Gallery -->
     <section class="py-16 bg-white">
         <div class="container mx-auto px-6">
-            <h2 class="section-title">Último Embarque - 03/07/2025</h2>
+            <h2 class="section-title">Último Embarque </h2>
             <div class="carousel-container max-w-4xl mx-auto">
                 <div class="carousel-slide active">
                     <img src="images/foto1.jpg" alt="Boeing 757 com porta do nariz aberta" class="w-full h-96 object-cover">
@@ -453,7 +453,7 @@
                                 <ul class="space-y-2">
                                     <li><strong>Porta do Nariz:</strong> Abertura frontal para carga oversized</li>
                                     <li><strong>Operadora:</strong> Cargolux Airlines</li>
-                                    <li><strong>Certificações:</strong> IATA, ICAO, FAA</li>
+                                    <li><strong>Certificações:</strong> OEA, IATA, ICAO, FAA</li>
                                     <li><strong>Compartimentos:</strong> Main deck e lower deck</li>
                                     <li><strong>Sistemas:</strong> Controle de temperatura</li>
                                     <li><strong>Segurança:</strong> Monitoramento 24/7</li>
@@ -586,146 +586,138 @@
 
     <script>
         // Carousel functionality
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.carousel-slide');
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        const totalSlides = slides.length;
-
-        function showSlide(n) {
-            slides[currentSlide].classList.remove('active');
-            indicators[currentSlide].classList.remove('active');
-            
-            currentSlide = (n + totalSlides) % totalSlides;
-            
-            slides[currentSlide].classList.add('active');
-            indicators[currentSlide].classList.add('active');
-        }
-
-        function changeSlide(direction) {
-            showSlide(currentSlide + direction);
-        }
-
-        function goToSlide(n) {
-            showSlide(n);
-        }
-
-        // Auto-advance carousel
-        setInterval(() => {
-            changeSlide(1);
-        }, 5000);
-
         // Calendar functionality
-        let currentDate = new Date(2025, 6, 1); // July 2025
-        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
-                           "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-        const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+let currentDate = new Date(2025, 6, 1); // July 2025
+const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-        const scheduledFlights = [
-            new Date(2025, 6, 3),  // July 3, 2025 (completed)
-            new Date(2025, 6, 18), // July 18, 2025 (next)
-            new Date(2025, 7, 2),  // August 2, 2025
-            new Date(2025, 7, 17), // August 17, 2025
-            new Date(2025, 8, 1),  // September 1, 2025
-            new Date(2025, 8, 16), // September 16, 2025
-        ];
+const scheduledFlights = [
+    new Date(2025, 6, 3),  // July 3, 2025 (completed)
+    new Date(2025, 6, 18), // July 18, 2025 (completed)
+    
+    new Date(2025, 7, 11), // August 11, 2025 (completed)
+    new Date(2025, 7, 21), // August 11, 2025 (completed)
+    new Date(2025, 8, 3),  // September 1, 2025
+    new Date(2025, 8, 18),  // September 1, 2025
+    new Date(2025, 9, 1), // September 16, 2025
+    new Date(2025, 9, 17), // October 16, 2025
+    new Date(2025, 9, 29), // October 16, 2025
+];
 
-        function generateCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const monthTitle = document.getElementById('currentMonth');
-            
-            monthTitle.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-            
-            // Clear grid
-            grid.innerHTML = '';
-            
-            // Add day headers
-            dayNames.forEach(day => {
-                const dayHeader = document.createElement('div');
-                dayHeader.className = 'calendar-day font-bold text-gray-600 bg-gray-100';
-                dayHeader.textContent = day;
-                grid.appendChild(dayHeader);
-            });
-            
-            // Get first day of month and number of days
-            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-            const startDate = new Date(firstDay);
-            startDate.setDate(startDate.getDate() - firstDay.getDay());
-            
-            // Generate calendar days
-            for (let i = 0; i < 42; i++) {
-                const cellDate = new Date(startDate);
-                cellDate.setDate(startDate.getDate() + i);
-                
-                const dayCell = document.createElement('div');
-                dayCell.className = 'calendar-day';
-                dayCell.textContent = cellDate.getDate();
-                
-                // Check if day is in current month
-                if (cellDate.getMonth() !== currentDate.getMonth()) {
-                    dayCell.classList.add('other-month');
-                }
-                
-                // Check for scheduled flights
-                const isScheduled = scheduledFlights.some(flight => 
-                    flight.getFullYear() === cellDate.getFullYear() &&
-                    flight.getMonth() === cellDate.getMonth() &&
-                    flight.getDate() === cellDate.getDate()
-                );
-                
-                if (isScheduled) {
-                    const today = new Date();
-                    const flightDate = new Date(cellDate);
-                    
-                    if (flightDate.getFullYear() === 2025 && flightDate.getMonth() === 6 && flightDate.getDate() === 3) {
-                        dayCell.classList.add('completed');
-                    } else {
-                        dayCell.classList.add('scheduled');
-                    }
-                }
-                
-                grid.appendChild(dayCell);
-            }
+function generateCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const monthTitle = document.getElementById('currentMonth');
+    
+    monthTitle.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+    
+    // Clear grid
+    grid.innerHTML = '';
+    
+    // Add day headers
+    dayNames.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'calendar-day font-bold text-gray-600 bg-gray-100';
+        dayHeader.textContent = day;
+        grid.appendChild(dayHeader);
+    });
+    
+    // Get first day of month and number of days
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const startDate = new Date(firstDay);
+    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    
+    // Generate calendar days
+    for (let i = 0; i < 42; i++) {
+        const cellDate = new Date(startDate);
+        cellDate.setDate(startDate.getDate() + i);
+        
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        dayCell.textContent = cellDate.getDate();
+        
+        // Check if day is in current month
+        if (cellDate.getMonth() !== currentDate.getMonth()) {
+            dayCell.classList.add('other-month');
         }
+        
+        // Check for scheduled flights
+        const isScheduled = scheduledFlights.some(flight => 
+            flight.getFullYear() === cellDate.getFullYear() &&
+            flight.getMonth() === cellDate.getMonth() &&
+            flight.getDate() === cellDate.getDate()
+        );
+        
+        if (isScheduled) {
+            // A lista de voos concluídos para verificação
+            const completedFlights = [
+                new Date(2025, 6, 3), 
+                new Date(2025, 6, 18), 
+                new Date(2025, 7, 11),
+                
+                
+                
+            ];
 
-        function prevMonth() {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            generateCalendar();
-        }
+            const isCompleted = completedFlights.some(completedFlight => 
+                completedFlight.getFullYear() === cellDate.getFullYear() &&
+                completedFlight.getMonth() === cellDate.getMonth() &&
+                completedFlight.getDate() === cellDate.getDate()
+            );
 
-        function nextMonth() {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            generateCalendar();
-        }
-
-        // Accordion functionality
-        function toggleAccordion(id) {
-            const content = document.getElementById(id + '-content');
-            const icon = document.getElementById(id + '-icon');
-            
-            if (content.classList.contains('active')) {
-                content.classList.remove('active');
-                icon.classList.remove('fa-chevron-up');
-                icon.classList.add('fa-chevron-down');
+            if (isCompleted) {
+                dayCell.classList.add('completed');
             } else {
-                content.classList.add('active');
-                icon.classList.remove('fa-chevron-down');
-                icon.classList.add('fa-chevron-up');
+                dayCell.classList.add('scheduled');
             }
         }
+        
+        // Esta linha precisa estar fora do 'if (isScheduled)'
+        // para que todos os dias do calendário sejam adicionados.
+        grid.appendChild(dayCell);
+    }
 
-        // Initialize calendar
-        generateCalendar();
+}
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
+function prevMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    generateCalendar();
+}
+
+function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    generateCalendar();
+}
+
+// Accordion functionality
+function toggleAccordion(id) {
+    const content = document.getElementById(id + '-content');
+    const icon = document.getElementById(id + '-icon');
+    
+    if (content.classList.contains('active')) {
+        content.classList.remove('active');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    } else {
+        content.classList.add('active');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    }
+}
+
+// Initialize calendar
+generateCalendar();
+
+// Smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
         });
+    });
+});
     </script>
 </body>
 </html>
