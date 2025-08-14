@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -174,6 +174,13 @@
         .calendar-day.scheduled {
             background: #2196F3;
             color: white;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .calendar-day.scheduled:hover {
+            background: #1976D2;
+            transform: scale(1.05);
         }
         
         .calendar-day.completed::after {
@@ -282,6 +289,194 @@
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(-50px) scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2E7D32;
+            box-shadow: 0 0 15px rgba(46, 125, 50, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(46, 125, 50, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .success-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .success-subtext {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -410,7 +605,7 @@
                         </div>
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-blue-500 rounded mr-2"></div>
-                            <span>Próximos Voos</span>
+                            <span>Próximos Voos - Clique para solicitar</span>
                         </div>
                     </div>
                 </div>
@@ -584,186 +779,366 @@
         </div>
     </footer>
 
+    <!-- Modal for Cargo Request -->
+    <div id="cargoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Solicitar Espaço de Carga</h2>
+                <button type="button" class="close-modal" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div id="modalForm">
+                <div class="mb-4 text-center">
+                    <div class="bg-blue-100 p-3 rounded-lg">
+                        <i class="fas fa-plane text-blue-600"></i>
+                        <span class="text-blue-800 font-semibold ml-2">Voo selecionado: <span id="selectedFlightDate"></span></span>
+                    </div>
+                </div>
+
+                <form id="cargoForm" action="https://formspree.io/f/xpwlnren" method="POST">
+                    <!-- Hidden fields for email routing -->
+                    <input type="hidden" name="_to" value="reinaldo.lourenco@pglbr.com.br,thiago.bianchi@pglbr.com.br">
+                    <input type="hidden" name="_subject" value="Nova Solicitação de Carga - PGL Rota Europa">
+                    <input type="hidden" name="data_voo" id="hiddenFlightDate">
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="nome">
+                            <i class="fas fa-user mr-2"></i>Nome Completo *
+                        </label>
+                        <input type="text" id="nome" name="nome" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">
+                            <i class="fas fa-envelope mr-2"></i>Email *
+                        </label>
+                        <input type="email" id="email" name="email" class="form-input" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="empresa">
+                                <i class="fas fa-building mr-2"></i>Empresa
+                            </label>
+                            <input type="text" id="empresa" name="empresa" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="telefone">
+                                <i class="fas fa-phone mr-2"></i>Telefone *
+                            </label>
+                            <input type="tel" id="telefone" name="telefone" class="form-input" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                            <i class="fas fa-box mr-2"></i>Dimensões da Carga
+                        </h3>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="comprimento">
+                                <i class="fas fa-ruler-horizontal mr-2"></i>Comprimento (cm) *
+                            </label>
+                            <input type="number" id="comprimento" name="comprimento" class="form-input" min="1" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="largura">
+                                <i class="fas fa-ruler mr-2"></i>Largura (cm) *
+                            </label>
+                            <input type="number" id="largura" name="largura" class="form-input" min="1" step="0.1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="altura">
+                                <i class="fas fa-ruler-vertical mr-2"></i>Altura (cm) *
+                            </label>
+                            <input type="number" id="altura" name="altura" class="form-input" min="1" step="0.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="peso">
+                                <i class="fas fa-weight-hanging mr-2"></i>Peso (kg) *
+                            </label>
+                            <input type="number" id="peso" name="peso" class="form-input" min="0.1" step="0.1" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="observacoes">
+                            <i class="fas fa-comment mr-2"></i>Observações sobre a carga
+                        </label>
+                        <textarea id="observacoes" name="observacoes" class="form-input" rows="3" placeholder="Descreva qualquer informação adicional sobre a carga..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="loading-spinner"></span>
+                        <span class="btn-text">Enviar Solicitação</span>
+                    </button>
+                </form>
+            </div>
+
+            <div id="successMessage" class="success-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="success-text">Solicitação Enviada com Sucesso!</div>
+                <div class="success-subtext">Sua demanda será processada e em breve retornaremos com maiores detalhes.</div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Carousel functionality
         // Calendar functionality
-let currentDate = new Date(2025, 6, 1); // July 2025
-const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-                       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+        let currentDate = new Date(2025, 6, 1); // July 2025
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                               "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        const dayNames = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-const scheduledFlights = [
-    new Date(2025, 6, 3),  // July 3, 2025 (completed)
-    new Date(2025, 6, 18), // July 18, 2025 (completed)
-    
-    new Date(2025, 7, 11), // August 11, 2025 (completed)
-    new Date(2025, 7, 21), // August 11, 2025 (completed)
-    new Date(2025, 8, 3),  // September 1, 2025
-    new Date(2025, 8, 18),  // September 1, 2025
-    new Date(2025, 9, 1), // September 16, 2025
-    new Date(2025, 9, 17), // October 16, 2025
-    new Date(2025, 9, 29), // October 16, 2025
-];
+        const scheduledFlights = [
+            new Date(2025, 6, 3),  // July 3, 2025 (completed)
+            new Date(2025, 6, 18), // July 18, 2025 (completed)
+            
+            new Date(2025, 7, 11), // August 11, 2025 (completed)
+            new Date(2025, 7, 21), // August 21, 2025 (completed)
+            new Date(2025, 8, 3),  // September 3, 2025
+            new Date(2025, 8, 18), // September 18, 2025
+            new Date(2025, 9, 1),  // October 1, 2025
+            new Date(2025, 9, 17), // October 17, 2025
+            new Date(2025, 9, 29), // October 29, 2025
+        ];
 
-function generateCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    const monthTitle = document.getElementById('currentMonth');
-    
-    monthTitle.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-    
-    // Clear grid
-    grid.innerHTML = '';
-    
-    // Add day headers
-    dayNames.forEach(day => {
-        const dayHeader = document.createElement('div');
-        dayHeader.className = 'calendar-day font-bold text-gray-600 bg-gray-100';
-        dayHeader.textContent = day;
-        grid.appendChild(dayHeader);
-    });
-    
-    // Get first day of month and number of days
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
-    
-    // Generate calendar days
-    for (let i = 0; i < 42; i++) {
-        const cellDate = new Date(startDate);
-        cellDate.setDate(startDate.getDate() + i);
-        
-        const dayCell = document.createElement('div');
-        dayCell.className = 'calendar-day';
-        dayCell.textContent = cellDate.getDate();
-        
-        // Check if day is in current month
-        if (cellDate.getMonth() !== currentDate.getMonth()) {
-            dayCell.classList.add('other-month');
-        }
-        
-        // Check for scheduled flights
-        const isScheduled = scheduledFlights.some(flight => 
-            flight.getFullYear() === cellDate.getFullYear() &&
-            flight.getMonth() === cellDate.getMonth() &&
-            flight.getDate() === cellDate.getDate()
-        );
-        
-        if (isScheduled) {
-            // A lista de voos concluídos para verificação
-            const completedFlights = [
-                new Date(2025, 6, 3), 
-                new Date(2025, 6, 18), 
-                new Date(2025, 7, 11),
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthTitle = document.getElementById('currentMonth');
+            
+            monthTitle.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            
+            // Clear grid
+            grid.innerHTML = '';
+            
+            // Add day headers
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day font-bold text-gray-600 bg-gray-100';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+            
+            // Get first day of month and number of days
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            // Generate calendar days
+            for (let i = 0; i < 42; i++) {
+                const cellDate = new Date(startDate);
+                cellDate.setDate(startDate.getDate() + i);
                 
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                dayCell.textContent = cellDate.getDate();
                 
+                // Check if day is in current month
+                if (cellDate.getMonth() !== currentDate.getMonth()) {
+                    dayCell.classList.add('other-month');
+                }
                 
-            ];
+                // Check for scheduled flights
+                const isScheduled = scheduledFlights.some(flight => 
+                    flight.getFullYear() === cellDate.getFullYear() &&
+                    flight.getMonth() === cellDate.getMonth() &&
+                    flight.getDate() === cellDate.getDate()
+                );
+                
+                if (isScheduled) {
+                    // A lista de voos concluídos para verificação
+                    const completedFlights = [
+                        new Date(2025, 6, 3), 
+                        new Date(2025, 6, 18), 
+                        new Date(2025, 7, 11),
+                        
+                    ];
 
-            const isCompleted = completedFlights.some(completedFlight => 
-                completedFlight.getFullYear() === cellDate.getFullYear() &&
-                completedFlight.getMonth() === cellDate.getMonth() &&
-                completedFlight.getDate() === cellDate.getDate()
-            );
+                    const isCompleted = completedFlights.some(completedFlight => 
+                        completedFlight.getFullYear() === cellDate.getFullYear() &&
+                        completedFlight.getMonth() === cellDate.getMonth() &&
+                        completedFlight.getDate() === cellDate.getDate()
+                    );
 
-            if (isCompleted) {
-                dayCell.classList.add('completed');
-            } else {
-                dayCell.classList.add('scheduled');
+                    if (isCompleted) {
+                        dayCell.classList.add('completed');
+                    } else {
+                        dayCell.classList.add('scheduled');
+                        dayCell.addEventListener('click', () => openModal(cellDate));
+                    }
+                }
+                
+                grid.appendChild(dayCell);
             }
         }
-        
-        // Esta linha precisa estar fora do 'if (isScheduled)'
-        // para que todos os dias do calendário sejam adicionados.
-        grid.appendChild(dayCell);
-    }
 
-}
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        }
 
-function prevMonth() {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    generateCalendar();
-}
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        }
 
-function nextMonth() {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    generateCalendar();
-}
+        // Modal functionality
+        function openModal(flightDate) {
+            const modal = document.getElementById('cargoModal');
+            const selectedFlightDateElement = document.getElementById('selectedFlightDate');
+            const hiddenFlightDateElement = document.getElementById('hiddenFlightDate');
+            
+            const formattedDate = flightDate.toLocaleDateString('pt-BR');
+            selectedFlightDateElement.textContent = formattedDate;
+            hiddenFlightDateElement.value = formattedDate;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-// Accordion functionality
-function toggleAccordion(id) {
-    const content = document.getElementById(id + '-content');
-    const icon = document.getElementById(id + '-icon');
-    
-    if (content.classList.contains('active')) {
-        content.classList.remove('active');
-        icon.classList.remove('fa-chevron-up');
-        icon.classList.add('fa-chevron-down');
-    } else {
-        content.classList.add('active');
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-up');
-    }
-}
+        function closeModal() {
+            const modal = document.getElementById('cargoModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Reset form and show form section
+            document.getElementById('cargoForm').reset();
+            document.getElementById('modalForm').style.display = 'block';
+            document.getElementById('successMessage').style.display = 'none';
+        }
 
-// Initialize calendar
-generateCalendar();
-
-// Smooth scrolling
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+        // Form submission
+        document.getElementById('cargoForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const btnText = document.querySelector('.btn-text');
+            const spinner = document.querySelector('.loading-spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.textContent = 'Enviando...';
+            
+            try {
+                const formData = new FormData(this);
+                
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('modalForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Auto close after 3 seconds
+                    setTimeout(() => {
+                        closeModal();
+                    }, 3000);
+                } else {
+                    throw new Error('Erro no envio');
+                }
+            } catch (error) {
+                alert('Erro ao enviar solicitação. Tente novamente.');
+                console.error('Error:', error);
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                spinner.style.display = 'none';
+                btnText.textContent = 'Enviar Solicitação';
+            }
         });
-    });
-});
 
+        // Close modal when clicking outside
+        document.getElementById('cargoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
 
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
 
-// ---------------- CAROUSEL ----------------
-let currentSlide = 0;
-const slides = document.querySelectorAll('.carousel-slide');
-const indicators = document.querySelectorAll('.carousel-indicator');
+        // Accordion functionality
+        function toggleAccordion(id) {
+            const content = document.getElementById(id + '-content');
+            const icon = document.getElementById(id + '-icon');
+            
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('active');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        }
 
-function showSlide(index) {
-    slides.forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-    });
-    indicators.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-    });
-    currentSlide = index;
-}
+        // Initialize calendar
+        generateCalendar();
 
-function changeSlide(direction) {
-    let newIndex = (currentSlide + direction + slides.length) % slides.length;
-    showSlide(newIndex);
-}
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 
-function goToSlide(index) {
-    showSlide(index);
-}
+        // Carousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.carousel-indicator');
 
-// Troca automática a cada 5 segundos
-setInterval(() => {
-    changeSlide(1);
-}, 5000);
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            indicators.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
 
-// Inicializa
-showSlide(currentSlide);
+        function changeSlide(direction) {
+            let newIndex = (currentSlide + direction + slides.length) % slides.length;
+            showSlide(newIndex);
+        }
 
-        
-        
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        // Auto slide change every 5 seconds
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+
+        // Initialize carousel
+        showSlide(currentSlide);
     </script>
 </body>
 </html>
-    <script id="html_badge_script1">
-        window.__genspark_remove_badge_link = "https://www.genspark.ai/api/html_badge/" +
-            "remove_badge?token=To%2FBnjzloZ3UfQdcSaYfDmSTkL4FjU7WYIzA%2FpJkveq4OLAomBdGR5xr3nKq4P1B2drifM9j3Zhj3XzREtSzZmfMGtguSP%2BvOHC3UHWyseqGycjfzgSTT4wYJaBEWM8c4kfawXyBh9Q9jY4sZXSZnvq%2Bz%2BzB2AcNHpTXvosGb%2B1Zz%2BOFWc8POWjvFQl9FpsSzENeJuju%2Fydv%2Ft7tuj5L5xZ1RZ7YvlU8GachEEz%2FwFliy7%2BZjB1ISzVJhJ2aT5zm8fNqXx0rnbWRAmvhsQ7t48cKXfFnFz0Zj%2BN%2BW5LS3slELCk5Pc6l0CGJcDPgjakzTXFFRyp06KUxlTNeQk8VzFapIb5JEnNZqS8PNv7r%2Bxhc6VqenojwJHULi9t6SKtDxV6yaVHPNeZWmD40yNkjcxd9Y4MeHCzLH02DmlcRzMNLcvhKRJKE1wp57BVx3l8ZJ7zs0bHGzVZdSVNqy9fexs6kXrt%2B%2FaPEtHrixEds5TaW%2BQQe4YnohiaUpghBAt5DBCZ4s1ASUcwIWZCy2Z5p5S5cXi93s73uOSJY0b1tV9s%3D";
-        window.__genspark_locale = "pt-BR";
-        window.__genspark_token = "To/BnjzloZ3UfQdcSaYfDmSTkL4FjU7WYIzA/pJkveq4OLAomBdGR5xr3nKq4P1B2drifM9j3Zhj3XzREtSzZmfMGtguSP+vOHC3UHWyseqGycjfzgSTT4wYJaBEWM8c4kfawXyBh9Q9jY4sZXSZnvq+z+zB2AcNHpTXvosGb+1Zz+OFWc8POWjvFQl9FpsSzENeJuju/ydv/t7tuj5L5xZ1RZ7YvlU8GachEEz/wFliy7+ZjB1ISzVJhJ2aT5zm8fNqXx0rnbWRAmvhsQ7t48cKXfFnFz0Zj+N+W5LS3slELCk5Pc6l0CGJcDPgjakzTXFFRyp06KUxlTNeQk8VzFapIb5JEnNZqS8PNv7r+xhc6VqenojwJHULi9t6SKtDxV6yaVHPNeZWmD40yNkjcxd9Y4MeHCzLH02DmlcRzMNLcvhKRJKE1wp57BVx3l8ZJ7zs0bHGzVZdSVNqy9fexs6kXrt+/aPEtHrixEds5TaW+QQe4YnohiaUpghBAt5DBCZ4s1ASUcwIWZCy2Z5p5S5cXi93s73uOSJY0b1tV9s=";
-    </script>
-    
-    <script id="html_notice_dialog_script" src="https://www.genspark.ai/notice_dialog.js"></script>
-    
