@@ -449,15 +449,16 @@
        .capacity-text {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    right: 10px;
+    transform: translateY(-50%);
     font-weight: bold;
     color: white;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
     font-size: 0.9rem;
     white-space: nowrap;
     z-index: 2;
 }
+
         
         .capacity-details {
             display: flex;
@@ -699,6 +700,27 @@
 
         
         @media (max-width: 768px) {
+            
+            contact-section .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-card h3 {
+        font-size: 1rem;
+    }
+    
+    .contact-card {
+        padding: 1.5rem;
+    }
+
+
+
+
+             .capacity-text {
+        font-size: 0.75rem;
+        right: 8px;
+    }
+            
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -803,6 +825,25 @@
 
 
         @media (max-width: 480px) {
+
+.capacity-text {
+        font-size: 0.7rem;
+        right: 5px;
+    }
+
+.contact-card {
+        padding: 1rem;
+    }
+    
+    .contact-card h3 {
+        font-size: 0.9rem;
+    }
+    
+    .contact-card span {
+        font-size: 0.8rem;
+    }
+
+
             .calendar-container {
                 padding: 0.75rem;
                 margin: 0 0.5rem;
@@ -1009,10 +1050,28 @@ capacity-bar-container {
                                 <i class="fas fa-calendar"></i>
                                 03/09/2025
                             </div>
+
+
+
+
+                            <div>   
                             <div class="cutoff-date">
                                 <i class="fas fa-clock"></i>
-                                Cut Off: 29/08
+                                Cut Off documental: 29/08 - 48horas
                             </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off da carga: 24 horas
+                            </div>
+                            </div> 
+
+
+
+
+
+
+
+
                         </div>
                         
                         <div class="flight-item" onclick="openModalForDate('18/09/2025')">
@@ -1020,10 +1079,24 @@ capacity-bar-container {
                                 <i class="fas fa-calendar"></i>
                                 18/09/2025
                             </div>
+
+
+
+
+                            <div>   
                             <div class="cutoff-date">
                                 <i class="fas fa-clock"></i>
-                                Cut Off: 15/09
+                                Cut Off documental: 15/09 - 48horas
                             </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off da carga: 24 horas
+                            </div>
+                            </div> 
+
+
+
+
                         </div>
                         
                         <div class="flight-item" onclick="openModalForDate('01/10/2025')">
@@ -1031,10 +1104,25 @@ capacity-bar-container {
                                 <i class="fas fa-calendar"></i>
                                 01/10/2025
                             </div>
+
+
+
+                            
+                            <div>   
                             <div class="cutoff-date">
                                 <i class="fas fa-clock"></i>
-                                Cut Off: 27/09
+                                Cut Off documental: 27/09 - 48horas
                             </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off da carga: 24 horas
+                            </div>
+                            </div> 
+
+
+
+
+
                         </div>
                         
                         <div class="flight-item" onclick="openModalForDate('17/10/2025')">
@@ -1042,10 +1130,25 @@ capacity-bar-container {
                                 <i class="fas fa-calendar"></i>
                                 17/10/2025
                             </div>
+
+
+
+
+                            <div>   
                             <div class="cutoff-date">
                                 <i class="fas fa-clock"></i>
-                                Cut Off: 13/10
+                                Cut Off documental: 13/10 - 48horas
                             </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off da carga: 24 horas
+                            </div>
+                            </div> 
+
+
+
+
+
                         </div>
                         
                         <div class="flight-item" onclick="openModalForDate('29/10/2025')">
@@ -1053,10 +1156,25 @@ capacity-bar-container {
                                 <i class="fas fa-calendar"></i>
                                 29/10/2025
                             </div>
+
+
+
+
+                            <div>   
                             <div class="cutoff-date">
                                 <i class="fas fa-clock"></i>
-                                Cut Off: 25/10
+                                Cut Off documental: 25/10 - 48horas
                             </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off da carga: 24 horas
+                            </div>
+                            </div> 
+
+
+
+
+
                         </div>
                     </div>
                 </div>
@@ -1237,52 +1355,131 @@ capacity-bar-container {
 
     <!-- Contact -->
     <section class="contact-section py-16" id="contato">
-        <div class="container mx-auto px-6">
-            <h2 class="section-title text-white">Entre em Contato</h2>
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="contact-card">
-                    <h3 class="text-xl font-bold mb-4">Informações de Contato</h3>
-                    <div class="space-y-3">
-                        <div class="flex items-center">
-                            <i class="fas fa-phone mr-3"></i>
-                            <span>+55 (12) 3939-4343</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-envelope mr-3"></i>
-                            <span>thiago.bianchi@pglbr.com.br</span>
-                        </div>
-                        <div class="flex items-center">
-                            <i class="fas fa-map-marker-alt mr-3"></i>
-                            <span>São José dos Campos, SP</span>
-                        </div>
+    <div class="container mx-auto px-6">
+        <h2 class="section-title text-white">Entre em Contato</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+            <!-- São Paulo - Matriz -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-building mr-2"></i>
+                    SÃO PAULO - MATRIZ
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Av. Chedid Jafet, 222
+
+                        Bloco D, Conj. 51 e 52<br>
+                        
+                        Vila Olímpia, São Paulo, SP<br>
+                        Telefone: +55 (11) 5592-2414</span>
                     </div>
                 </div>
-                
-                <div class="contact-card">
-                    <h3 class="text-xl font-bold mb-4">Horário de Operação</h3>
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <span>Segunda - Sexta:</span>
-                            <span>08:00 - 18:00</span>
-                        </div>
-                       
-                        <div class="flex justify-between">
-                            <span>Plantão AOG 24/7:</span>
-                            <span>Disponível</span>
-                        </div>
+            </div>
+
+            <!-- Santos - Filial -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-anchor mr-2"></i>
+                    SANTOS - FILIAL
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Alameda Armênio Mendes, 66 - Salas: 702/703/704 - 7º Anda<br>
+                        Aparecida - Santos, SP, 11035-260<br>
+                        Telefone: +55 (13) 3279-3800</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guarulhos - Filial -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-plane mr-2"></i>
+                    GUARULHOS - FILIAL
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Rodovia Hélio Smith, s/n
+
+                        Aeroporto Internacional de Guarulhos<br>
+                        Prédio Teca, 3 º andar, Sala 3.19<br>
+                        Prédio TECA-1, Andar, Sala 1379<br>
+                        
+                        Telefone: +55 (11) 2445-5120</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rio de Janeiro - Filial -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-mountain mr-2"></i>
+                    RIO DE JANEIRO - FILIAL
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Rua Visconde de Piraja, nº 495 - Sala 608<br>
+                        Ipanema - Rio de Janeiro<br>
+                        CEP 22410-002</span>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- Segunda linha com escritórios adicionais -->
+        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mt-8">
+            <!-- São José dos Campos - Filial -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-industry mr-2"></i>
+                    SÃO JOSÉ DOS CAMPOS - FILIAL
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Avenida Salmão, nº 325, 8º Andar<br>
+                        Parque Residencial Aquarius São José dos Campos-SP,<br>
+                        CEP 12246-260<br>
+                        Telefone: +55 (12) 3932-8100</span>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <!-- Curitiba - Filial -->
+            <div class="contact-card">
+                <h3 class="text-lg font-bold mb-3 text-center">
+                    <i class="fas fa-tree mr-2"></i>
+                    CURITIBA - FILIAL
+                </h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start">
+                        <i class="fas fa-map-marker-alt mr-2 mt-1 flex-shrink-0"></i>
+                        <span>Rua Dr. Manoel Pedro, 365, sala 402<br>
+                        Cabral, Curitiba, PR, 80035-030<br>
+                        Telefone: +55 (41) 3527-0977</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informação adicional -->
+        
+    </div>
+</section>
+
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
-                    <h4 class="font-bold mb-3">PGL - Agente de Cargas</h4>
-                    <p class="text-gray-400">Especialistas em logística internacional com soluções completas para transporte de cargas.</p>
+                    <h4 class="font-bold mb-3">PGL</h4>
+                    <p class="text-gray-400">Uma empresa especializada e certificada em Transporte e Logística, atuando com uma estrutura mundial.</p>
                 </div>
                 <div>
                     <h4 class="font-bold mb-3">Serviços</h4>
@@ -1437,13 +1634,25 @@ capacity-bar-container {
         function updateCapacityDisplay() {
             const { totalCapacity, usedCapacity } = CAPACITY_CONFIG;
             const availableCapacity = totalCapacity - usedCapacity;
-            const usagePercentage = Math.round((usedCapacity / totalCapacity) * 100);
+            const usagePercentage = Math.max(25, Math.round((usedCapacity / totalCapacity) * 100));
             
             // Update capacity bar
             const capacityBar = document.getElementById('capacityBar');
             const capacityText = document.getElementById('capacityText');
             capacityBar.style.width = `${usagePercentage}%`;
             capacityText.textContent = `${usedCapacity.toLocaleString()}kg / ${totalCapacity.toLocaleString()}kg (${usagePercentage}%)`;
+
+            if (usagePercentage < 50) {
+    capacityText.style.right = '10px';
+    capacityText.style.left = 'auto';
+    capacityText.style.color = '#666';
+    capacityText.style.textShadow = '1px 1px 2px rgba(255,255,255,0.8)';
+} else {
+    capacityText.style.right = '10px';
+    capacityText.style.left = 'auto';
+    capacityText.style.color = 'white';
+    capacityText.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8)';
+}
             
             // Update capacity details
             document.getElementById('usedCapacity').textContent = `${usedCapacity.toLocaleString()}kg`;
