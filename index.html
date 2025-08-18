@@ -309,6 +309,207 @@
             100% { transform: scale(1); }
         }
 
+        /* NEW STYLES FOR FLIGHT SCHEDULE AND CAPACITY */
+        .flight-schedule-card {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+            border-radius: 20px;
+            padding: 2rem;
+            color: white;
+            box-shadow: 0 15px 35px rgba(46, 125, 50, 0.3);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .flight-schedule-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        }
+        
+        .flight-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .flight-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .flight-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .flight-date {
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .flight-date i {
+            margin-right: 0.5rem;
+            color: #C8E6C9;
+        }
+        
+        .cutoff-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cutoff-date i {
+            margin-right: 0.5rem;
+            color: #FFCDD2;
+        }
+        
+        .capacity-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .capacity-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .capacity-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2E7D32;
+            margin-bottom: 0.5rem;
+        }
+        
+        .capacity-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .capacity-bar-container {
+            background: #f0f0f0;
+            border-radius: 25px;
+            height: 40px;
+            position: relative;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .capacity-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4, #45B7D1);
+    border-radius: 25px;
+    transition: width 1s ease-in-out;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    min-width: 60px;
+}
+        
+        .capacity-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: capacityShine 2s infinite;
+        }
+        
+        @keyframes capacityShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+       .capacity-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    z-index: 2;
+}
+        
+        .capacity-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .capacity-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .capacity-value {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .capacity-used {
+            color: #FF6B6B;
+        }
+        
+        .capacity-available {
+            color: #4CAF50;
+        }
+        
+        .capacity-total {
+            color: #2E7D32;
+        }
+        
+        .capacity-warning {
+            background: linear-gradient(135deg, #FF6B6B, #FF5722);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .capacity-warning.show {
+            display: block;
+            animation: warningPulse 2s infinite;
+        }
+        
+        @keyframes warningPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -487,6 +688,16 @@
         }
 
         /* MEDIA QUERIES RESPONSIVAS */
+
+
+
+
+
+
+
+
+
+        
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -547,7 +758,49 @@
             .carousel-next {
                 right: 15px;
             }
+
+            .flight-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .flight-schedule-card {
+                padding: 1.5rem;
+            }
+            
+            .capacity-details {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .capacity-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0.5rem;
+                background: #f8f9fa;
+                border-radius: 8px;
+            }
         }
+
+
+.capacity-bar-container {
+        height: 50px;
+        margin: 2rem 0;
+    }
+    
+    .capacity-text {
+        font-size: 0.8rem;
+        font-weight: 900;
+    }
+    
+    .capacity-section {
+        padding: 1.5rem;
+    }
+
+
+
 
         @media (max-width: 480px) {
             .calendar-container {
@@ -614,6 +867,26 @@
                 right: 10px;
             }
         }
+
+
+capacity-bar-container {
+        height: 45px;
+        margin: 1.5rem 0;
+    }
+    
+    .capacity-text {
+        font-size: 0.7rem;
+        font-weight: 900;
+    }
+    
+    .capacity-details {
+        font-size: 0.85rem;
+    }
+
+
+
+
+
     </style>
 </head>
 
@@ -653,7 +926,7 @@
                 </div>
                 <div class="frequency-badge">
                     <i class="fas fa-calendar-alt mr-2"></i>
-                    Próximo voo: 21/08/2025
+                    Próximo voo: 03/09/2025
                 </div>
             </div>
         </div>
@@ -718,6 +991,119 @@
     <section class="py-16 bg-gray-100" id="rota">
         <div class="container mx-auto px-6">
             <h2 class="section-title">Programação</h2>
+            
+            <!-- NEW: Flight Schedule Card -->
+            <div class="max-w-4xl mx-auto mb-8">
+                <div class="flight-schedule-card">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold mb-2">
+                            <i class="fas fa-plane-departure mr-3"></i>
+                            Próximos Voos 2025
+                        </h3>
+                        <p class="opacity-90">Programe suas cargas com antecedência</p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flight-item" onclick="openModalForDate('03/09/2025')">
+                            <div class="flight-date">
+                                <i class="fas fa-calendar"></i>
+                                03/09/2025
+                            </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off: 29/08
+                            </div>
+                        </div>
+                        
+                        <div class="flight-item" onclick="openModalForDate('18/09/2025')">
+                            <div class="flight-date">
+                                <i class="fas fa-calendar"></i>
+                                18/09/2025
+                            </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off: 15/09
+                            </div>
+                        </div>
+                        
+                        <div class="flight-item" onclick="openModalForDate('01/10/2025')">
+                            <div class="flight-date">
+                                <i class="fas fa-calendar"></i>
+                                01/10/2025
+                            </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off: 27/09
+                            </div>
+                        </div>
+                        
+                        <div class="flight-item" onclick="openModalForDate('17/10/2025')">
+                            <div class="flight-date">
+                                <i class="fas fa-calendar"></i>
+                                17/10/2025
+                            </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off: 13/10
+                            </div>
+                        </div>
+                        
+                        <div class="flight-item" onclick="openModalForDate('29/10/2025')">
+                            <div class="flight-date">
+                                <i class="fas fa-calendar"></i>
+                                29/10/2025
+                            </div>
+                            <div class="cutoff-date">
+                                <i class="fas fa-clock"></i>
+                                Cut Off: 25/10
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NEW: Capacity Monitor -->
+                <div class="capacity-section">
+                    <div class="capacity-header">
+                        <div class="capacity-title">
+                            <i class="fas fa-weight-hanging mr-2"></i>
+                            Capacidade Lower Deck
+                        </div>
+                        <div class="capacity-subtitle">Monitoramento da capacidade de carga disponível</div>
+                    </div>
+                    
+                    <div class="capacity-bar-container">
+                        <div class="capacity-bar" id="capacityBar" style="width: 65%;">
+                            <div class="capacity-text" id="capacityText">13.000kg / 20.000kg (65%)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="capacity-details">
+                        <div class="capacity-item">
+                            <div class="capacity-value capacity-used" id="usedCapacity">13.000kg</div>
+                            <div>Ocupado</div>
+                        </div>
+                        <div class="capacity-item">
+                            <div class="capacity-value capacity-available" id="availableCapacity">7.000kg</div>
+                            <div>Disponível</div>
+                        </div>
+                        <div class="capacity-item">
+                            <div class="capacity-value capacity-total">20.000kg</div>
+                            <div>Capacidade Total</div>
+                        </div>
+                    </div>
+                    
+                    <div class="capacity-warning" id="capacityWarning">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        Atenção: Capacidade quase esgotada! Reserve seu espaço rapidamente.
+                    </div>
+                    
+                    <div class="text-center mt-4 text-sm text-gray-600">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Entre em contato para informações precisas.
+                    </div>
+                </div>
+            </div>
+            
             <div class="max-w-4xl mx-auto">
                 <div class="calendar-container">
                     <div class="calendar-header">
@@ -734,7 +1120,7 @@
                         <!-- Calendar will be generated by JavaScript -->
                     </div>
                     
-                                        <div class="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+                    <div class="mt-6 flex flex-wrap justify-center gap-4 text-sm">
                         <div class="flex items-center">
                             <div class="w-4 h-4 bg-green-500 rounded mr-2 flex-shrink-0"></div>
                             <span>Embarque Realizado</span>
@@ -744,7 +1130,6 @@
                             <span class="text-center">Próximos Voos - Clique para solicitar seu embarque</span>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -1030,6 +1415,62 @@
     </div>
 
     <script>
+        // CAPACITIES CONFIGURATION - EDIT HERE TO UPDATE CAPACITY
+        const CAPACITY_CONFIG = {
+            totalCapacity: 20000, // Total capacity in kg
+            usedCapacity: 6000,  // Used capacity in kg - UPDATE THIS VALUE MANUALLY
+            warningThreshold: 85  // Show warning when capacity reaches this percentage
+        };
+
+        // FLIGHT DATES CONFIGURATION - ADD NEW FLIGHTS HERE
+        const UPCOMING_FLIGHTS = [
+            { date: '03/09/2025', cutoff: '29/08' },
+            { date: '18/09/2025', cutoff: '15/09' },
+            { date: '01/10/2025', cutoff: '27/09' },
+            { date: '17/10/2025', cutoff: '13/10' },
+            { date: '29/10/2025', cutoff: '25/10' }
+            // ADD NEW FLIGHTS HERE IN THE FUTURE
+            // { date: 'DD/MM/YYYY', cutoff: 'DD/MM' }
+        ];
+
+        // Function to update capacity display
+        function updateCapacityDisplay() {
+            const { totalCapacity, usedCapacity } = CAPACITY_CONFIG;
+            const availableCapacity = totalCapacity - usedCapacity;
+            const usagePercentage = Math.round((usedCapacity / totalCapacity) * 100);
+            
+            // Update capacity bar
+            const capacityBar = document.getElementById('capacityBar');
+            const capacityText = document.getElementById('capacityText');
+            capacityBar.style.width = `${usagePercentage}%`;
+            capacityText.textContent = `${usedCapacity.toLocaleString()}kg / ${totalCapacity.toLocaleString()}kg (${usagePercentage}%)`;
+            
+            // Update capacity details
+            document.getElementById('usedCapacity').textContent = `${usedCapacity.toLocaleString()}kg`;
+            document.getElementById('availableCapacity').textContent = `${availableCapacity.toLocaleString()}kg`;
+            
+            // Show warning if capacity is high
+            const warningElement = document.getElementById('capacityWarning');
+            if (usagePercentage >= CAPACITY_CONFIG.warningThreshold) {
+                warningElement.classList.add('show');
+            } else {
+                warningElement.classList.remove('show');
+            }
+        }
+
+        // Function to open modal for specific date
+        function openModalForDate(dateString) {
+            const modal = document.getElementById('cargoModal');
+            const selectedFlightDateElement = document.getElementById('selectedFlightDate');
+            const hiddenFlightDateElement = document.getElementById('hiddenFlightDate');
+            
+            selectedFlightDateElement.textContent = dateString;
+            hiddenFlightDateElement.value = dateString;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
         // Calendar functionality
         let currentDate = new Date(2025, 6, 1); // July 2025
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -1041,7 +1482,6 @@
             new Date(2025, 6, 18), // July 18, 2025 (completed)
             
             new Date(2025, 7, 11), // August 11, 2025 (completed)
-            new Date(2025, 7, 21), // August 21, 2025 (completed)
             new Date(2025, 8, 3),  // September 3, 2025
             new Date(2025, 8, 18), // September 18, 2025
             new Date(2025, 9, 1),  // October 1, 2025
@@ -1099,7 +1539,6 @@
                         new Date(2025, 6, 3), 
                         new Date(2025, 6, 18), 
                         new Date(2025, 7, 11),
-                        
                     ];
 
                     const isCompleted = completedFlights.some(completedFlight => 
@@ -1232,8 +1671,9 @@
             }
         }
 
-        // Initialize calendar
+        // Initialize calendar and capacity
         generateCalendar();
+        updateCapacityDisplay();
 
         // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1272,7 +1712,7 @@
         // Auto slide change every 5 seconds
         setInterval(() => {
             changeSlide(1);
-        }, 5000);
+        }, 15000);
 
         // Initialize carousel
         showSlide(currentSlide);
